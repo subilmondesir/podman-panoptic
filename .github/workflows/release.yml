@@ -1,0 +1,33 @@
+name: Panoptic CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: 🏗️ Gold Master Build
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0 
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Go 1.22
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
+
+    - name: Download Modules
+      run: go mod download
+
+    - name: Verify Integrity (Vet)
+      run: go vet ./...
+
+    - name: Compile Everything (Static)
+      # Compile tous les paquets récursivement pour valider l'architecture
+      run: go build -v ./...
