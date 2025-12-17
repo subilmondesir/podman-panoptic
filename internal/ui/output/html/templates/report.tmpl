@@ -1,0 +1,461 @@
+<!-- internal/ui/output/html/templates/report.tmpl -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANOPTIC - Rapport d'Audit de Sécurité</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --critical: #e74c3c;
+            --high: #e67e22;
+            --medium: #f1c40f;
+            --low: #2ecc71;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-gradient);
+            padding: 40px 20px;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            border-bottom: 4px solid var(--primary);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+        
+        .metadata {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            opacity: 0.9;
+            font-size: 0.95em;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        
+        .metadata span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        main {
+            padding: 40px;
+        }
+        
+        /* --- KPI CARDS --- */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .stat-card {
+            background: white;
+            color: var(--text);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 3em;
+            margin-bottom: 5px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .stat-card p {
+            color: var(--text-light);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .stat-card.risk-high h3 { color: var(--critical); }
+        .stat-card.risk-med h3 { color: var(--high); }
+        
+        section { margin-bottom: 60px; }
+        
+        section h2 {
+            color: var(--secondary);
+            border-bottom: 3px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* --- ERRORS SECTION --- */
+        .scan-errors {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .scan-errors h3 {
+            color: #c53030;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .scan-errors ul {
+            list-style-position: inside;
+            color: #c53030;
+        }
+        
+        /* --- CONTAINER LIST --- */
+        .container-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .container-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dfe6e9;
+            display: grid;
+            grid-template-columns: 40px 1fr auto;
+            gap: 15px;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .container-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateX(5px);
+            border-left-color: var(--primary);
+        }
+        
+        .container-item .status-icon { font-size: 1.5em; }
+        
+        .container-item .info h4 {
+            color: var(--text);
+            margin-bottom: 4px;
+            font-size: 1.1em;
+        }
+        
+        .container-item .info p {
+            color: var(--text-light);
+            font-size: 0.9em;
+            font-family: monospace;
+        }
+        
+        .container-item .state {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .state.running { background: #d4edda; color: #155724; }
+        .state.exited { background: #f8d7da; color: #721c24; }
+        
+        /* --- FINDINGS (VULNS & MISCONFIGS) --- */
+        .finding {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-left-width: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+        
+        .finding:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        
+        /* Mapping CSS Majuscules directes (Fix Go Template) */
+        .finding.CRITICAL { border-left-color: var(--critical); background: #fffbfb; }
+        .finding.HIGH     { border-left-color: var(--high); background: #fffdf9; }
+        .finding.MEDIUM   { border-left-color: var(--medium); background: #fffff0; }
+        .finding.LOW      { border-left-color: var(--low); background: #fafffc; }
+        
+        .finding-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .severity-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .severity-badge.CRITICAL { background: var(--critical); color: white; }
+        .severity-badge.HIGH     { background: var(--high); color: white; }
+        .severity-badge.MEDIUM   { background: var(--medium); color: #333; }
+        .severity-badge.LOW      { background: var(--low); color: white; }
+        
+        .finding h4 {
+            flex: 1;
+            color: var(--text);
+            font-size: 1.15em;
+            font-weight: 600;
+        }
+        
+        .finding-detail {
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+        
+        .finding-detail strong {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        
+        .finding-detail p { color: var(--text); }
+        
+        .remediation {
+            background: #f1f8ff;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+        
+        .remediation strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        footer {
+            background: #f8f9fa;
+            color: var(--text-light);
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <span>👁️</span>
+                PANOPTIC
+            </h1>
+            <div class="metadata">
+                <span>📅 <strong>Date:</strong> {{ .Metadata.GeneratedAt.Format "2006-01-02 15:04:05" }}</span>
+                <span>⏱️ <strong>Durée:</strong> {{ .Metadata.ScanDuration }}</span>
+                <span>📌 <strong>Version:</strong> {{ .Metadata.Version }}</span>
+                <span>🖥️ <strong>Hôte:</strong> {{ .Metadata.Hostname }}</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Résumé Exécutif -->
+            <section>
+                <h2>📊 Résumé Exécutif</h2>
+                <div class="summary">
+                    <div class="stat-card">
+                        <h3>{{ .Metadata.TotalContainers }}</h3>
+                        <p>Conteneurs</p>
+                    </div>
+                    <div class="stat-card {{ if gt .Summary.TotalVulnerabilities 0 }}risk-high{{ end }}">
+                        <h3>{{ .Summary.TotalVulnerabilities }}</h3>
+                        <p>Vulnérabilités</p>
+                    </div>
+                    <div class="stat-card {{ if gt .Summary.TotalMisconfigurations 0 }}risk-med{{ end }}">
+                        <h3>{{ .Summary.TotalMisconfigurations }}</h3>
+                        <p>Problèmes Config</p>
+                    </div>
+                    <div class="stat-card {{ if gt .Summary.RiskScore 50.0 }}risk-high{{ end }}">
+                        <h3>{{ printf "%.1f" .Summary.RiskScore }}</h3>
+                        <p>Score Risque /100</p>
+                    </div>
+                </div>
+
+                <!-- Affichage des erreurs de scan partielles -->
+                {{ if gt (len .ScanErrors) 0 }}
+                <div class="scan-errors">
+                    <h3>⚠️ Erreurs rencontrées durant le scan</h3>
+                    <ul>
+                        {{ range .ScanErrors }}
+                        <li>{{ . }}</li>
+                        {{ end }}
+                    </ul>
+                </div>
+                {{ end }}
+            </section>
+
+            <!-- Conteneurs Détectés -->
+            <section>
+                <h2>📦 Conteneurs Détectés</h2>
+                {{ if eq (len .Containers) 0 }}
+                <div class="empty-state">
+                    <h3>Aucun conteneur détecté</h3>
+                    <p>Aucun conteneur actif ou arrêté n'a été trouvé sur ce système.</p>
+                </div>
+                {{ else }}
+                <div class="container-list">
+                    {{ range .Containers }}
+                    <div class="container-item">
+                        <div class="status-icon">
+                            {{ if eq .State "running" }}🟢{{ else }}⚪{{ end }}
+                        </div>
+                        <div class="info">
+                            <h4>{{ .Name }}</h4>
+                            <p>{{ .Image }} • ID: {{ .ID }}</p>
+                        </div>
+                        <span class="state {{ .State }}">{{ .State }}</span>
+                    </div>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </section>
+
+            <!-- Misconfigurations de Sécurité -->
+            {{ if gt (len .Misconfigurations) 0 }}
+            <section>
+                <h2>🛡️ Configurations Dangereuses</h2>
+                {{ range .Misconfigurations }}
+                <div class="finding {{ .Severity }}">
+                    <div class="finding-header">
+                        <span class="severity-badge {{ .Severity }}">{{ .Severity }}</span>
+                        <h4>{{ .ID }} - {{ .Title }}</h4>
+                    </div>
+                    
+                    <div class="finding-detail">
+                        <strong>Ressource</strong>
+                        <p>{{ .Resource }}</p>
+                    </div>
+                    
+                    <div class="finding-detail">
+                        <strong>Description</strong>
+                        <p>{{ .Description }}</p>
+                    </div>
+                    
+                    <div class="remediation">
+                        <strong>💡 Action Requise</strong>
+                        {{ .Remediation }}
+                    </div>
+                </div>
+                {{ end }}
+            </section>
+            {{ end }}
+
+            <!-- Vulnérabilités -->
+            {{ if gt (len .Vulnerabilities) 0 }}
+            <section>
+                <h2>🔍 Vulnérabilités CVE</h2>
+                {{ range .Vulnerabilities }}
+                <div class="finding {{ .Severity }}">
+                    <div class="finding-header">
+                        <span class="severity-badge {{ .Severity }}">{{ .Severity }}</span>
+                        <h4>{{ .ID }} - {{ .Title }}</h4>
+                    </div>
+                    
+                    <div class="finding-detail">
+                        <strong>Composant</strong>
+                        <p>{{ .Package }} ({{ .Version }})</p>
+                    </div>
+                    
+                    <div class="finding-detail">
+                        <strong>Description</strong>
+                        <p>{{ .Description }}</p>
+                    </div>
+                    
+                    {{ if .FixedIn }}
+                    <div class="remediation">
+                        <strong>💡 Correctif</strong>
+                        Mettre à jour vers la version <strong>{{ .FixedIn }}</strong>
+                    </div>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </section>
+            {{ end }}
+        </main>
+
+        <footer>
+            <p>Généré par <strong>PANOPTIC v{{ .Metadata.Version }}</strong> • The All-Seeing Eye for Container Security</p>
+            <p><a href="https://github.com/subilmondesir/podman-panoptic" style="color: inherit;">Documentation GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>

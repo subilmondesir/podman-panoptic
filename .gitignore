@@ -1,0 +1,36 @@
+# Binaries
+panoptic
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Go workspace
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+dist/
+bin/
+
+# Reports (generated during tests)
+*.html
+*.json
+audit-*.json
+report-*.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config
+.panoptic.yaml
+panoptic.yaml
