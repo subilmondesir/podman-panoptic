@@ -89,6 +89,8 @@ Première version production-ready de PANOPTIC.
       Scanning distant via SSH
 - [ ] Extended CIS Benchmark checks  
       Vérifications CIS Benchmark étendues
+- [ ] **Smart Context Detection:** Recognize Toolbox/Distrobox containers to prevent false positive risk scores  
+      **Détection Intelligente de Contexte :** Reconnaît les conteneurs Toolbox/Distrobox pour éviter les faux positifs de score
 
 ---
 
