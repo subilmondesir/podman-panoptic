@@ -1,7 +1,7 @@
 # 👁️ PANOPTIC
 
-**The all-seeing eye for Podman security** • **L'œil omniscient pour la sécurité Podman**  
-Next-gen container audit system • Système d'audit nouvelle génération
+🇬🇧**The all-seeing eye for Podman security** • **L'œil omniscient pour la sécurité Podman**  
+🇫🇷**Next-gen container audit system • Système d'audit nouvelle génération**
 
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=for-the-badge&logo=go)](https://golang.org)
 [![Podman](https://img.shields.io/badge/Podman-Native-892CA0?style=for-the-badge&logo=podman)](https://podman.io)
@@ -13,13 +13,13 @@ Next-gen container audit system • Système d'audit nouvelle génération
 > **Philosophy:** *"See Everything. Secure Everywhere."*  
 > **Philosophie :** *"Voir tout. Sécuriser partout."*
 
-**PANOPTIC** is a next-generation security audit tool for **Podman** environments, written in **Go**. It performs deep inspection via the Podman Socket API, integrates **Trivy** for CVE scanning, and delivers results through an immersive Terminal UI or comprehensive HTML reports.
+🇬🇧**PANOPTIC** is a next-generation security audit tool for **Podman** environments, written in **Go**. It performs deep inspection via the Podman Socket API, integrates **Trivy** for CVE scanning, and delivers results through an immersive Terminal UI or comprehensive HTML reports.
 
-**PANOPTIC** est un outil d'audit de sécurité nouvelle génération pour les environnements **Podman**, écrit en **Go**. Il effectue une inspection approfondie via l'API Socket Podman, intègre **Trivy** pour le scanning CVE, et génère des rapports via une interface terminal immersive ou des rapports HTML complets.
+🇫🇷**PANOPTIC** est un outil d'audit de sécurité nouvelle génération pour les environnements **Podman**, écrit en **Go**. Il effectue une inspection approfondie via l'API Socket Podman, intègre **Trivy** pour le scanning CVE, et génère des rapports via une interface terminal immersive ou des rapports HTML complets.
 
 ---
 
-## ⚡ Features • Fonctionnalités
+## ⚡ Features • Fonctionnalités 🇬🇧🇫🇷
 
 | Feature | Description (EN/FR) |
 |---------|---------------------|
@@ -32,7 +32,7 @@ Next-gen container audit system • Système d'audit nouvelle génération
 
 ---
 
-## 🚀 Quick Start • Démarrage Rapide
+## 🚀 Quick Start • Démarrage Rapide 🇬🇧🇫🇷
 
 ### Prerequisites • Prérequis
 
@@ -75,7 +75,7 @@ sudo make install
 
 ---
 
-## 🎮 Usage • Utilisation
+## 🎮 Usage • Utilisation 🇬🇧🇫🇷
 
 ### 1. Start Podman Socket • Démarrer le Socket Podman
 
@@ -119,7 +119,7 @@ panoptic scan --timeout 300
 
 ---
 
-## 📊 Example Output • Exemple de Sortie
+## 📊 Example Output • Exemple de Sortie 🇬🇧🇫🇷
 
 ### Terminal Report • Rapport Terminal
 ```
@@ -158,8 +158,7 @@ Risk Score:           3.0/100 • Score de Risque: 3.0/100
 
 ---
 
-## 🧪 Capabilities Matrix • Matrice des Capacités (v1.0.0)
-
+## 🧪 Capabilities Matrix • Matrice des Capacités (v1.0.0) 🇬🇧🇫🇷
 ### ✅ Core Security Engine • Moteur de Sécurité Principal (Active • Actif)
 
 | Capability | Description |
@@ -191,7 +190,7 @@ Risk Score:           3.0/100 • Score de Risque: 3.0/100
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture 🇬🇧🇫🇷
 
 PANOPTIC follows strict **Hexagonal Architecture** (Ports & Adapters) for modularity.  
 PANOPTIC suit une **Architecture Hexagonale** stricte (Ports & Adapters) pour la modularité.
@@ -213,7 +212,7 @@ internal/
 
 ---
 
-## 🔧 Configuration
+## 🔧 Configuration 🇬🇧🇫🇷
 
 ### Config File • Fichier de Configuration (Optional • Optionnel)
 
@@ -236,7 +235,7 @@ export PANOPTIC_VERBOSE=true
 
 ---
 
-## 🧪 Performance Metrics • Métriques de Performance
+## 🧪 Performance Metrics • Métriques de Performance 🇬🇧🇫🇷
 
 *Stress-tested on Kali Linux, Debian, Fedora, AlmaLinux, Ubuntu with Podman 5.4.2*  
 *Testé en conditions de stress sur Kali Linux, Debian, Fedora, AlmaLinux, Ubuntu avec Podman 5.4.2*
@@ -251,7 +250,7 @@ export PANOPTIC_VERBOSE=true
 
 ---
 
-## 🤝 Contributing • Contribuer
+## 🤝 Contributing • Contribuer 🇬🇧🇫🇷
 
 Contributions are welcome! Please maintain the hexagonal architecture pattern.  
 Les contributions sont bienvenues ! Merci de maintenir le pattern d'architecture hexagonale.
@@ -263,14 +262,14 @@ Les contributions sont bienvenues ! Merci de maintenir le pattern d'architecture
 
 ---
 
-## 📜 License • Licence
+## 📜 License • Licence 🇬🇧🇫🇷
 
 MIT License - see [LICENSE](LICENSE) file for details.  
 Licence MIT - voir le fichier [LICENSE](LICENSE) pour détails.
 
 ---
 
-## 🙏 Acknowledgments • Remerciements
+## 🙏 Acknowledgments • Remerciements 
 
 - **Podman Project** for the amazing container runtime  
 - **Aqua Security** for Trivy CVE scanner  

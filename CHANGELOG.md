@@ -1,4 +1,4 @@
-# Changelog
+# Changelog 🇬🇧🇫🇷
 
 All notable changes to PANOPTIC are documented here.  
 Tous les changements notables de PANOPTIC sont documentés ici.
